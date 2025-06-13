@@ -8,33 +8,62 @@ st.set_page_config(
     layout="centered"
 )
 
-# 🖌️ 스타일
+# 🖌️ 기본 스타일 적용
 st.markdown("""
     <style>
-    body {
+    html, body, [class*="css"] {
+        font-family: 'Helvetica Neue', sans-serif;
         background-color: #121212;
         color: white;
     }
+
     .title {
         font-size: 48px;
         color: #00e0ff;
         text-align: center;
+        margin-bottom: 10px;
     }
+
     .subtitle {
         font-size: 20px;
         color: #cccccc;
         text-align: center;
+        margin-bottom: 30px;
     }
+
+    .emotion-btn {
+        display: inline-block;
+        margin: 10px;
+        padding: 12px 24px;
+        background-color: #1f1f1f;
+        border-radius: 8px;
+        border: 1px solid #00e0ff;
+        color: white;
+        cursor: pointer;
+        font-size: 18px;
+        text-align: center;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .emotion-btn:hover {
+        background-color: #00e0ff;
+        color: black;
+        transform: scale(1.05);
+    }
+
     .music-box {
         background-color: #1f1f1f;
-        padding: 20px;
+        padding: 25px;
         border-radius: 12px;
-        margin-top: 30px;
+        margin-top: 40px;
         text-align: center;
+        border: 1px solid #00e0ff;
     }
+
     a {
         color: #00ffff;
         font-weight: bold;
+        font-size: 20px;
         text-decoration: none;
     }
     a:hover {
@@ -49,10 +78,23 @@ st.markdown('<div class="subtitle">지금 당신의 기분에 어울리는 음�
 
 # 🎭 감정 선택
 st.markdown("---")
-st.subheader("당신의 현재 감정을 골라주세요 💭")
+st.subheader("💭 현재 기분을 선택해 주세요")
 
-emotions = ["😊 기쁨", "😢 슬픔", "😡 화남", "😌 평온", "😱 불안"]
-selected_emotion = st.selectbox("감정 선택:", emotions)
+emotions = {
+    "😊 기쁨": "happy",
+    "😢 슬픔": "sad",
+    "😡 화남": "angry",
+    "😌 평온": "calm",
+    "😱 불안": "anxious"
+}
+
+selected_emotion = None
+cols = st.columns(len(emotions))
+
+for i, (label, key) in enumerate(emotions.items()):
+    with cols[i]:
+        if st.button(label, key=key):
+            selected_emotion = label
 
 # 🎶 음악 추천 리스트
 music_recommendations = {
@@ -74,16 +116,4 @@ music_recommendations = {
     ],
     "😱 불안": [
         ("Coldplay - Fix You", "https://www.youtube.com/watch?v=k4V3Mo61fJM"),
-        ("이수 - My Way", "https://www.youtube.com/watch?v=wDJzYRrPZ_k")
-    ]
-}
-
-# 🎯 추천 버튼
-if st.button("음악 추천 받기 🎵"):
-    music = random.choice(music_recommendations[selected_emotion])
-    st.markdown(f"""
-        <div class="music-box">
-            <h3>추천 음악:</h3>
-            <a href="{music[1]}" target="_blank">{music[0]}</a>
-        </div>
-    """, unsafe_allow_html=True)
+        ("이수 - My Way", "https://www.youtube.com/watch?v=wDJzY
