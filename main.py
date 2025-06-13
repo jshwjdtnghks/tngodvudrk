@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# 🖌️ 기본 스타일 적용
+# 🖌️ 기본 스타일 + 추천 박스 꾸미기
 st.markdown("""
     <style>
     html, body, [class*="css"] {
@@ -32,22 +32,40 @@ st.markdown("""
     }
 
     .music-box {
-        background-color: #1f1f1f;
-        padding: 25px;
-        border-radius: 12px;
+        background-color: #1e1e1e;
+        padding: 30px;
+        border-radius: 15px;
         margin-top: 40px;
         text-align: center;
-        border: 1px solid #00e0ff;
+        border: none;
+        box-shadow: 0 4px 20px rgba(0, 224, 255, 0.2);
+        transition: transform 0.3s ease;
     }
 
-    a {
-        color: #00ffff;
-        font-weight: bold;
-        font-size: 20px;
-        text-decoration: none;
+    .music-box:hover {
+        transform: scale(1.02);
     }
-    a:hover {
-        text-decoration: underline;
+
+    .music-box h3 {
+        color: #00e0ff;
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+
+    .music-link {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #00e0ff;
+        color: black;
+        font-weight: bold;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 18px;
+        transition: background-color 0.2s ease;
+    }
+
+    .music-link:hover {
+        background-color: #00c0e0;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -60,7 +78,6 @@ st.markdown('<div class="subtitle">지금 당신의 기분에 어울리는 음�
 st.markdown("---")
 st.subheader("💭 현재 기분을 선택해 주세요")
 
-# 감정 버튼 정의
 emotions = {
     "😊 기쁨": "happy",
     "😢 슬픔": "sad",
@@ -77,7 +94,7 @@ for i, (label, key) in enumerate(emotions.items()):
         if st.button(label, key=key):
             selected_emotion = label
 
-# 🎶 확장된 음악 추천 리스트
+# 🎶 음악 추천 리스트 (감정별 5곡씩)
 music_recommendations = {
     "😊 기쁨": [
         ("BTS - Dynamite", "https://www.youtube.com/watch?v=gdZLi9oWNZg"),
@@ -121,7 +138,7 @@ if selected_emotion:
     music = random.choice(music_recommendations[selected_emotion])
     st.markdown(f"""
         <div class="music-box">
-            <h3>🎵 추천 음악:</h3>
-            <a href="{music[1]}" target="_blank">{music[0]}</a>
+            <h3>🎵 추천 음악</h3>
+            <a href="{music[1]}" class="music-link" target="_blank">{music[0]}</a>
         </div>
     """, unsafe_allow_html=True)
